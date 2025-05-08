@@ -1,0 +1,17 @@
+[
+    {
+      "disease": "Common Cold",
+      "symptoms": ["runny nose", "sneezing", "sore throat"],
+      "description": "A mild viral infection of the nose and throat."
+    },
+    {
+      "disease": "Flu (Influenza)",
+      "symptoms": ["fever", "body aches", "fatigue", "cough"],
+      "description": "A contagious respiratory illness caused by influenza viruses."
+    },
+    {
+      "disease": "Allergies",
+      "symptoms": ["sneezing", "itchy eyes", "nasal congestion"],
+      "description": "Immune system reaction to harmless substances like pollen."
+    }
+  ]

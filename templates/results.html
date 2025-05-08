@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Medical Symptom Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .about-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #0d6efd;
+        }
+        .section {
+            margin-bottom: 1.5rem;
+        }
+        .tech-badge {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="about-container">
+            <div class="header">
+                <h1>About Medical Symptom Search</h1>
+                <p class="text-muted">Information Retrieval System for Medical Conditions</p>
+            </div>
+            
+            <div class="section">
+                <h4>Purpose</h4>
+                <p>This application is designed to help users identify possible medical conditions based on their symptoms. 
+                By entering symptoms into the search box, the system uses advanced information retrieval techniques to find 
+                matching conditions from its database.</p>
+                <div class="alert alert-warning">
+                    <strong>Disclaimer:</strong> This tool is for informational purposes only and should not replace 
+                    professional medical advice. Always consult with a healthcare provider for proper diagnosis and treatment.
+                </div>
+            </div>
+            
+            <div class="section">
+                <h4>Information Retrieval Methods</h4>
+                <p>This application implements several IR techniques to provide accurate and helpful results:</p>
+                
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">BM25F Ranking</h5>
+                        <p class="card-text">BM25F is a state-of-the-art ranking function that extends the classic BM25 algorithm 
+                        to handle multiple fields. It incorporates:</p>
+                        <ul>
+                            <li><strong>Term Frequency (TF)</strong> - How often a query term appears in a document</li>
+                            <li><strong>Inverse Document Frequency (IDF)</strong> - Measures how important a term is</li>
+                            <li><strong>Document Length Normalization</strong> - Accounts for varying document lengths</li>
+                            <li><strong>Field Weighting</strong> - Allows different fields to have different importance</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Text Processing Techniques</h5>
+                        <ul>
+                            <li><strong>Stemming</strong> - Reduces words to their root form (e.g., "running" → "run")</li>
+                            <li><strong>Fuzzy Matching</strong> - Handles misspellings and typos in search queries</li>
+                            <li><strong>Multi-field Searching</strong> - Searches across symptoms and synonyms fields</li>
+                            <li><strong>Spelling Suggestions</strong> - Offers alternative spellings for potentially misspelled terms</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <h4>Technologies Used</h4>
+                <div>
+                    <span class="badge bg-primary tech-badge">Python</span>
+                    <span class="badge bg-success tech-badge">Flask</span>
+                    <span class="badge bg-info text-dark tech-badge">Whoosh</span>
+                    <span class="badge bg-secondary tech-badge">Bootstrap</span>
+                    <span class="badge bg-danger tech-badge">HTML/CSS</span>
+                    <span class="badge bg-warning text-dark tech-badge">JavaScript</span>
+                </div>
+                <p class="mt-2">
+                    <strong>Whoosh</strong> is a pure Python search engine library that provides indexing and searching capabilities. 
+                    It's used in this application for creating a searchable index of medical conditions and symptoms, allowing for 
+                    fast and relevant search results.
+                </p>
+            </div>
+            
+            <div class="section">
+                <h4>Database</h4>
+                <p>The application includes information on 25+ common medical conditions, including:</p>
+                <ul>
+                    <li>Common cold and influenza</li>
+                    <li>Respiratory conditions (asthma, bronchitis, pneumonia)</li>
+                    <li>Digestive disorders (GERD, IBS)</li>
+                    <li>Chronic conditions (hypertension, diabetes)</li>
+                    <li>Mental health (depression, anxiety)</li>
+                    <li>And many more</li>
+                </ul>
+                <p>Each condition is indexed with its symptoms, description, synonyms, severity, and treatment information.</p>
+            </div>
+            
+            <div class="mt-4 text-center">
+                <a href="/" class="btn btn-primary">Return to Search</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Medical Symptom Search - Created for educational purposes</p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

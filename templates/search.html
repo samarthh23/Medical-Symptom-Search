@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediSearch - Symptom Analysis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3a86ff;
+            --primary-dark: #2667cc;
+            --secondary: #4cc9f0;
+            --success: #38b000;
+            --warning: #ff9e00;
+            --danger: #d90429;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gradient-bg: linear-gradient(135deg, #4cc9f0 0%, #3a86ff 100%);
+        }
+        
+        body {
+            background-color: #f0f4f8;
+            font-family: 'Poppins', sans-serif;
+            color: #2d3748;
+        }
+        
+        .page-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .navbar {
+            background: var(--gradient-bg);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 1rem 0;
+        }
+        
+        .navbar-brand {
+            color: white;
+            font-weight: 700;
+            font-size: 1.5rem;
+            padding: 0;
+        }
+        
+        .search-container {
+            max-width: 850px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .header h1 {
+            color: var(--primary);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+        }
+        
+        .header p {
+            color: #718096;
+            font-size: 1.1rem;
+        }
+        
+        .search-box {
+            background-color: #f8fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+            margin-bottom: 1.5rem;
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .form-control {
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1.1rem;
+            border: 2px solid #e2e8f0;
+            box-shadow: none;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 0.2rem rgba(58, 134, 255, 0.25);
+        }
+        
+        .search-btn {
+            border-radius: 50px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            min-width: 120px;
+            background: var(--gradient-bg);
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(58, 134, 255, 0.4);
+        }
+        
+        .results-container {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed #cbd5e0;
+        }
+        
+        .result-heading {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .result-heading h4 {
+            margin-bottom: 0;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .result-count {
+            background-color: var(--primary);
+            color: white;
+            border-radius: 50px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.9rem;
+            margin-left: 0.75rem;
+        }
+        
+        .disease-card {
+            margin-bottom: 1.5rem;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .disease-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            background: linear-gradient(to right, #f8f9fa, white);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            padding: 1rem 1.5rem;
+        }
+        
+        .card-body {
+            padding: 1.5rem;
+        }
+        
+        .disease-name {
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .disease-synonyms {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+        
+        .severity-badge {
+            font-size: 0.75rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-weight: 600;
+            color: white;
+            margin-left: auto;
+        }
+        
+        .mild {
+            background-color: var(--success);
+        }
+        
+        .moderate {
+            background-color: var(--warning);
+        }
+        
+        .serious {
+            background-color: var(--danger);
+        }
+        
+        .variable {
+            background-color: #805ad5;
+        }
+        
+        .disease-description {
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+        
+        .treatment-section {
+            background-color: #f0f9ff;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+        
+        .treatment-title {
+            color: #2b6cb0;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .treatment-title i {
+            margin-right: 0.5rem;
+        }
+        
+        .symptoms-section {
+            margin: 1rem 0;
+        }
+        
+        .symptoms-title {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+        
+        .symptoms-title i {
+            margin-right: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .symptom-tag {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            display: inline-block;
+            transition: all 0.2s;
+        }
+        
+        .symptom-tag:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
+        }
+        
+        .suggestions-section {
+            background-color: #f7f7f7;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .suggestions-title {
+            font-size: 0.9rem;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        
+        .suggestions-pill {
+            cursor: pointer;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            background-color: #e2e8f0;
+            color: #2d3748;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+        
+        .suggestions-pill:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .related-section {
+            margin-top: 2rem;
+            padding: 1rem;
+            background-color: #f0f4f8;
+            border-radius: 8px;
+        }
+        
+        .related-title {
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .related-title i {
+            margin-right: 0.5rem;
+            color: var(--secondary);
+        }
+        
+        .related-tag {
+            background-color: var(--secondary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        
+        .related-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 6px rgba(76, 201, 240, 0.3);
+        }
+        
+        .method-info {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .method-info h6 {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f3f4f6;
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+        
+        .no-results i {
+            font-size: 3rem;
+            color: #cbd5e0;
+            margin-bottom: 1rem;
+        }
+        
+        .no-results h5 {
+            color: #4a5568;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 1.5rem 0;
+            margin-top: auto;
+            border-top: 1px solid #e2e8f0;
+        }
+        
+        .footer-text {
+            color: #718096;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        
+        .footer-link:hover {
+            color: var(--primary-dark);
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-container">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <i class="fas fa-heartbeat me-2"></i>MediSearch
+                </a>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link text-white" href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <div class="search-container">
+                <div class="header">
+                    <h1>Symptom Analysis</h1>
+                    <p>Enter your symptoms to find possible medical conditions</p>
+                </div>
+                
+                {% if error %}
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+                </div>
+                {% endif %}
+                
+                <div class="search-box">
+                    <form method="POST" action="/" id="searchForm">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="symptoms" id="symptoms" 
+                                placeholder="Enter symptoms (e.g., headache, fever)" value="{{ query }}" required>
+                            <button class="btn btn-primary search-btn ms-2" type="submit">
+                                <i class="fas fa-search me-2"></i>Search
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                {% if search_performed %}
+                    {% if suggestions %}
+                    <div class="suggestions-section">
+                        <p class="suggestions-title"><i class="fas fa-spell-check me-2"></i>Did you mean:</p>
+                        <div>
+                            {% for suggestion in suggestions %}
+                            <span class="badge suggestions-pill">{{ suggestion }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if results and results.estimated_length() > 0 %}
+                    <div class="results-container">
+                        <div class="result-heading">
+                            <h4>Possible Conditions</h4>
+                            <span class="result-count">{{ results.estimated_length() }}</span>
+                        </div>
+                        
+                        {% for hit in results %}
+                        <div class="card disease-card mb-4">
+                            <div class="card-header">
+                                <h5 class="disease-name">
+                                    <i class="fas fa-file-medical me-2"></i>{{ hit["disease"] }}
+                                    <span class="badge severity-badge {{ hit['severity'] }}">
+                                        {% if hit['severity'] == 'mild' %}
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        {% elif hit['severity'] == 'moderate' %}
+                                        <i class="fas fa-exclamation-circle me-1"></i>
+                                        {% elif hit['severity'] == 'serious' %}
+                                        <i class="fas fa-exclamation-triangle me-1"></i>
+                                        {% elif hit['severity'] == 'variable' %}
+                                        <i class="fas fa-random me-1"></i>
+                                        {% endif %}
+                                        {{ hit["severity"].title() }}
+                                    </span>
+                                </h5>
+                                {% if hit.get("synonyms") %}
+                                <div class="disease-synonyms">
+                                    <i class="fas fa-tag me-1"></i>Also known as: {{ hit.get("synonyms", "") }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <p class="disease-description">{{ hit["description"] }}</p>
+                                
+                                <div class="symptoms-section">
+                                    <div class="symptoms-title">
+                                        <i class="fas fa-clipboard-list"></i>Symptoms
+                                    </div>
+                                    <div>
+                                        {% for symptom in hit["symptoms"].split(" ") %}
+                                        <span class="symptom-tag">{{ symptom }}</span>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                
+                                {% if hit.get("treatment") %}
+                                <div class="treatment-section">
+                                    <div class="treatment-title">
+                                        <i class="fas fa-prescription-bottle-alt"></i>Treatment
+                                    </div>
+                                    <p class="mb-0">{{ hit["treatment"] }}</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+                        {% if related_terms %}
+                        <div class="related-section">
+                            <div class="related-title">
+                                <i class="fas fa-link"></i>Related Symptoms
+                            </div>
+                            <div>
+                                {% for term in related_terms %}
+                                <span class="related-tag">{{ term }}</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="method-info">
+                            <h6><i class="fas fa-search me-2"></i>Search Method Used</h6>
+                            <p class="mb-2"><strong>{{ ir_method }}</strong> - a state-of-the-art information retrieval ranking function 
+                            that incorporates term frequency, inverse document frequency, and document length normalization.</p>
+                            <p class="mb-0">Additional features: fuzzy matching for misspelled terms, multi-field searching across symptoms and synonyms, 
+                            stemming analysis for better matching of related word forms.</p>
+                        </div>
+                    </div>
+                    {% elif search_performed and not results %}
+                    <div class="no-results">
+                        <i class="fas fa-search"></i>
+                        <h5>No matching conditions found</h5>
+                        <p>No results for "{{ query }}". Try different symptoms or check the suggested terms.</p>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <div class="container">
+                <p class="footer-text">
+                    <i class="fas fa-info-circle me-1"></i>
+                    This tool is for informational purposes only and should not replace professional medical advice.
+                </p>
+                <p class="mb-0">
+                    <a href="/about" class="footer-link">About MediSearch</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Add click handler for suggestion pills
+        document.querySelectorAll('.suggestions-pill').forEach(pill => {
+            pill.addEventListener('click', function() {
+                document.getElementById('symptoms').value = this.textContent.trim();
+                document.getElementById('searchForm').submit();
+            });
+        });
+    </script>
+</body>
+</html>
